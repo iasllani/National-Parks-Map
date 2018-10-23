@@ -6,6 +6,8 @@ import pandas as pd
 # then read national_parks.csv and save as 'df2'
 df1 = pd.read_csv("volcano.txt")
 df2 = pd.read_csv("us_national_parks.txt")
+df3 = pd.read_csv("us_capital.txt")
+
 
 # correct apostrophes that mess with separation
 df1['NAME'] = df1['NAME'].str.replace("'", "&#39;")
@@ -36,8 +38,14 @@ def color(elevation):
 for lat1, lon1, name1, elev in zip(df1['LAT'], df1['LON'], df1['NAME'], df1['ELEV']):
     folium.Marker(location=[lat1, lon1], popup=name1, icon=folium.Icon(color=color(elev), icon_color='white', icon='cloud')).add_to(map)
 
+# create a for loop that will go through each national park and mark it gray
 for lat2, lon2, name2 in zip(df2['Latitude'], df2['Longitude'], df2['Name']):
-    folium.Marker(location=[lat2, lon2], popup=name2, icon=folium.Icon(color='gray', icon='info-sign')).add_to(map)
+    folium.Marker(location=[lat2, lon2], popup=name2, icon=folium.Icon(color='purple', icon='info-sign')).add_to(map)
+
+
+# create a for loop that will go through each us city and mark it yellow
+for lat3, lon3, city, state in zip(df3['Latitude'], df3['Longitude'], df3['CITY'], df3['STATE']):
+    folium.Marker(location=[lat3, lon3], popup=city+", "+state, icon=folium.Icon(color='black', icon='star')).add_to(map)
 
 print(map.save('mark_map.html'))
 
